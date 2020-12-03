@@ -13,7 +13,7 @@ import argparse
 from influxdb import InfluxDBClient
 
 # csv_to_influx
-# input: the csv file name (with path, if needed)
+# input: a csv file name (with path, if needed)
 # extracts data from the csv and sends it to influx
 def csv_to_influx(file, args):
     print("Processing file "+file)
@@ -91,18 +91,19 @@ def csv_to_influx_json(file_name, measurement, groupID):
                 first_line = False
             else:
                 # each line is a new measurement (new point to write)
+
                 measurement_data = {
                     "measurement": measurement,
                     "tags": {
                         "group": groupID,
                     },
-                    "time": int(float(row["Temps"])*1000000), # converted to us (microseconds)
+                    "time": int(FloatOrZero(row["Temps"])*1000000), # converted to us (microseconds)
                     "fields": { # Temps,PressionArterielle,Spirometrie,PAmoyenne,FrequenceCardiaque,FrequenceRespiratoire,Remarque
-                        "PressionArterielle": float(row["PressionArterielle"]),
-                        "Spirometrie": float(row["Spirometrie"]),
-                        "PAmoyenne": float(row["PAmoyenne"]),
-                        "FrequenceCardiaque": float(row["FrequenceCardiaque"]),
-                        "FrequenceRespiratoire": float(row["FrequenceRespiratoire"]),
+                        "PressionArterielle": FloatOrZero(row["PressionArterielle"]),
+                        "Spirometrie": FloatOrZero(row["Spirometrie"]),
+                        "PAmoyenne": FloatOrZero(row["PAmoyenne"]),
+                        "FrequenceCardiaque": FloatOrZero(row["FrequenceCardiaque"]),
+                        "FrequenceRespiratoire": FloatOrZero(row["FrequenceRespiratoire"]),
                         "Remarque": row["Remarque"]
                     }
                 }
@@ -120,6 +121,12 @@ def csv_to_influx_json(file_name, measurement, groupID):
         json_batches.append(json_body)   
 
     return json_batches
+
+def FloatOrZero(value):
+    try:
+        return float(value)
+    except:
+        return 0.0
 
 # parse the args
 def parse_args():

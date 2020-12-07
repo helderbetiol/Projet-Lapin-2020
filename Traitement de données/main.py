@@ -5,8 +5,8 @@ import affichageCourbes as affichage
 import correction
 
 path_actuel_def = os.getcwd()
-path_entree_def = path_actuel_def + "\\data\\Source\\"
-path_sortie_def = path_actuel_def + "\\data\\"
+path_entree_def = path_actuel_def + "\\data\\Source"
+path_sortie_def = path_actuel_def + "\\data"
 variables = ['Temps', 
             'PressionArterielle', 
             'Spirometrie', 
@@ -41,6 +41,7 @@ The program will finish")
         file = open(f"{path_entree}\\{element}", 'r')
         file_name = element.rsplit(".", 1)[0]  # Nom du fichier sans l'extension (.txt, etc)
         path_sortie = imp_data.dir_exists(path_data_output, file_name)
+        print(f"Fichier {file_name} en traitement")
         imp_data.import_data(file, path_sortie, title, file_name)
 
 
@@ -133,14 +134,14 @@ fichier .csv")
 
 if __name__ == "__main__":
     args = parse_args()
-    path_entree = args.pathin
-    path_sortie = args.pathout
+    path_entree = args.pathin + "\\"
+    path_sortie = args.pathout + "\\"
     if args.pathout==path_sortie_def:
         path_sortie = imp_data.dir_exists(path_sortie_def, "Sortie")
     variables = args.variables
-    if args.mode == "imp":
+    if args.mode == "Imp":
         importation_donnees(path_entree, path_sortie, variables)
-    elif(args.mode == "correct"):
+    elif(args.mode == "Correct"):
         if args.pathin==path_entree_def:
             path_entree = imp_data.dir_exists(path_sortie_def, "Sortie")
         correction_donnees(path_entree)

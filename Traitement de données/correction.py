@@ -11,6 +11,7 @@
 import os
 import pandas as pd
 import numpy as np
+import importationData as imp_data
 
 
 # Fonction qui corrige les valeurs impossible pour une dataframe entiere : a accélérer si possible
@@ -96,14 +97,16 @@ def correction(path, file_list):
     # Correction dataframe par dataframe
 
     for file in file_list:
-        df = pd.read_csv(f"{path}\\{file}", encoding='utf-8-sig')
-        data_corrigee = data_a_corriger
-        data_a_corriger = df
-        correction_valeurs_absurdes(data_a_corriger, data_corrigee)
-        data_a_corriger.to_csv(f"{path}\\Corrige-{file}", index=False)
+        if (".csv" in file):
+            path_sortie = imp_data.dir_exists(path, "Corrigées")
+            df = pd.read_csv(f"{path}\\{file}", encoding='utf-8-sig')
+            data_corrigee = data_a_corriger
+            data_a_corriger = df
+            correction_valeurs_absurdes(data_a_corriger, data_corrigee)
+            data_a_corriger.to_csv(f"{path_sortie}\\Corrigee-{file}", index=False)
 
-        # Affichage de l'avancement
-        avancement = nb_fichiers_traitees / nb_fichiers_totales * 100
-        print(f"Avancement actuel : {avancement}% effectué")
-        nb_fichiers_traitees += 1
+            # Affichage de l'avancement
+            avancement = nb_fichiers_traitees / nb_fichiers_totales * 100
+            print(f"Avancement actuel : {avancement}% effectué")
+            nb_fichiers_traitees += 1
 

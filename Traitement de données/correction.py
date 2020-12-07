@@ -10,7 +10,6 @@
 
 import os
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -55,6 +54,14 @@ def correction_valeurs_absurdes(new_df, old_df):
 
     for row in range(1, n_new):
 
+        if row == 10:
+            print("Llegó a los 10")
+        elif(row == 100):
+            print("Llegó a los 100")
+        elif(row == 1000):
+            print("Llegó a los 1000")
+        elif(row%1000000 == 0):
+            print("Vamos con un mega más")
         # Données utile
         old_freqCardiaque = new_freqCardiaque
         new_freqCardiaque = new_df['FrequenceCardiaque'][row]
@@ -78,55 +85,25 @@ def correction_valeurs_absurdes(new_df, old_df):
 
 # Fonction qui prend un path et qui importe puis applique les fonctions
 
-# Import du fichier
-
-#path1 = os.getcwd()
-path1 = "C:\\Users\\Mateo Agudelo\\Documents\\Universidad\\IMT\\Projet Entreprise\\Projet Lapin\\2020\\Traitement de données\\test-traitement-données"
-path2 = "\\data\\data-groupe1\\"
-#path = path1 + path2
-path = 'C:\\Users\\Mateo Agudelo\\Documents\\Helder\\data-groupe1\\'
-
-assert os.path.isdir(path), "Le path n'existe pas."
-print("L'importation a fonctionné super nickel")
-with os.scandir(path) as temp:
-    file_list = [file.name for file in temp if os.path.isfile(file)]
-
-
 # ### Correction :
 
 def correction(path, file_list):
-    # Liste de dataframes
-    liste_dataframes = []
-
-    for file in file_list:
-        try:
-            liste_dataframes.append(pd.read_csv(path+file, encoding='utf-8-sig'))
-        except:
-            pass
-
-    # Nb de lignes à corriger
-    nb_lignes_totales = 0
-    for df in liste_dataframes:
-        nb_lignes_totales += df['Temps'].size
-
     # Initialisation
     data_a_corriger = pd.DataFrame()
-    nb_fichier = len(file_list)
-    nb_lignes_traitees = 0
+    nb_fichiers_totales = len(file_list)
+    nb_fichiers_traitees = 1
 
     # Correction dataframe par dataframe
 
-    for i in range(0, nb_fichier):
+    for file in file_list:
+        df = pd.read_csv(f"{path}\\{file}", encoding='utf-8-sig')
+        data_corrigee = data_a_corriger
+        data_a_corriger = df
+        correction_valeurs_absurdes(data_a_corriger, data_corrigee)
+        data_a_corriger.to_csv(f"{path}\\Corrige-{file}", index=False)
 
         # Affichage de l'avancement
-        avancement = nb_lignes_traitees / nb_lignes_totales * 100
+        avancement = nb_fichiers_traitees / nb_fichiers_totales * 100
         print(f"Avancement actuel : {avancement}% effectué")
-
-        # Correction
-        data_corrigee = data_a_corriger
-        data_a_corriger = liste_dataframes[i]
-        donnees_corrigees = correction_valeurs_absurdes(data_a_corriger, data_corrigee)
-
-        nb_lignes_traitees += data_a_corriger['Temps'].size
-    return donnees_corrigees
+        nb_fichiers_traitees += 1
 

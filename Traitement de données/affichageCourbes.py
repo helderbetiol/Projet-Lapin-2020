@@ -14,10 +14,22 @@ def calculer(data, valeur_etudiee, pas, sommaire='Temps', pas_echantillonage=0.0
         y.append(data[valeur_etudiee][i])
     return x, y
 
-def afficher(x, y, label_x="", label_y="", title=""):
+"""
+afficher(ax, x, y, label_x="", label_y="", title="")
+
+Inputs:     ax : Axes d'une figure pour graphiquer les plots.
+            x : Ensemble de données sur l'axe x.
+            y : Ensemble de données sur l'axe y.
+            label_x : Label de l'axe x.
+            label_y : Label de l'axe y.
+            title : Titre du plot.
+
+Cette méthode construir un plot entre x vs y dans les axes ax, assigne les 
+valeurs des labels et met un titre.
+"""
+def afficher(ax, x, y, label_x="", label_y="", title=""):
     # Création de la courbe
-    plt.plot(x,y)
+    ax.plot(x,y)
     plt.xlabel(label_x)
     plt.ylabel(label_y)
     plt.title(title)
-    plt.show()

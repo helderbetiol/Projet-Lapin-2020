@@ -10,6 +10,7 @@
 
 import csv
 import argparse
+import os 
 from influxdb import InfluxDBClient
 
 # csv_to_influx
@@ -18,7 +19,7 @@ from influxdb import InfluxDBClient
 def csv_to_influx(file, args):
     print("Processing file "+file)
     # create json batches from csv
-    json_batches = csv_to_influx_json(args.file, args.measure, args.group)
+    json_batches = csv_to_influx_json(file, args.measure, args.group)
     if json_batches:
         print("We have data")
         # print(json_body)
@@ -161,13 +162,15 @@ if __name__ == '__main__':
 
     if args.path:
         # process all files in given path
-        with os.scandir(path) as directory:   
+        with os.scandir(args.path) as directory:   
             file_list = [file.name for file in directory if os.path.isfile(file)]
             if not file_list:
                 print("No files found in path")
                 exit()
 
         for file in file_list:
+            file = args.path + file
+            print(file)
             csv_to_influx(file, args)
             # each file is expected to be an unique group
             args.group += 1

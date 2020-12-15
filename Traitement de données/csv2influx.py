@@ -110,7 +110,7 @@ def csv_to_influx_json(file_name, measurement, groupID):
                         "Remarque": row["Remarque"]
                     }
                 }
-                if line_count == 1: # first time value
+                if line_count == 1 and time_offset == 0: # first value
                     time_offset = measurement_data["time"] # offset is the first measure's time 
 
                 json_body.append(measurement_data)

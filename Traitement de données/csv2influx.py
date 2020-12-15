@@ -1,6 +1,7 @@
 # csv2influx.py
 # Sends data from csv files to influxDB
 # Requirement: pip install influxdb
+# Tested with Python 3.7
 # Usage example: 
 # python csv2influx.py --file data-groupe1_Seq2_adrenaline\ 50uL_Essai4.csv --group 1 --measure adrenaline
 #
@@ -78,6 +79,7 @@ def send_influx(json_batches, host='localhost', port=8086, user='root', password
 # output: an array of json files to send to influx
 def csv_to_influx_json(file_name, measurement, groupID):
     line_count = 0
+    time_offset = 0 # shift the timeseries so it begins in 0s
     json_batches = [] # InfluxDB performs best when data is written in batches
     json_body = [] # for each json batch
 
@@ -98,7 +100,7 @@ def csv_to_influx_json(file_name, measurement, groupID):
                     "tags": {
                         "group": groupID,
                     },
-                    "time": int(FloatOrZero(row["Temps"])*1000000), # converted to us (microseconds)
+                    "time": int(FloatOrZero(row["Temps"])*1000000) - time_offset, # converted to us (microseconds)
                     "fields": { # Temps,PressionArterielle,Spirometrie,PAmoyenne,FrequenceCardiaque,FrequenceRespiratoire,Remarque
                         "PressionArterielle": FloatOrZero(row["PressionArterielle"]),
                         "Spirometrie": FloatOrZero(row["Spirometrie"]),
@@ -108,6 +110,9 @@ def csv_to_influx_json(file_name, measurement, groupID):
                         "Remarque": row["Remarque"]
                     }
                 }
+                if line_count == 1: # first time value
+                    time_offset = measurement_data["time"] # offset is the first measure's time 
+
                 json_body.append(measurement_data)
                 line_count += 1
 
@@ -116,9 +121,7 @@ def csv_to_influx_json(file_name, measurement, groupID):
                     line_count = 0
                     json_body = []  
 
-    if 0 < line_count < 10000:
-        # print("appended last!")
-        # print(line_count)
+    if 0 < line_count < 10000: # one last batch left to add
         json_batches.append(json_body)   
 
     return json_batches

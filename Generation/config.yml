@@ -1,0 +1,15 @@
+---
+
+buckets:
+  - name: rabbit
+    type: influxdb
+    addr: 172.17.0.1:8086
+    database: rabbit
+    measurement: adrenaline
+
+server:
+  listen: 0.0.0.0:8077
+
+storage:
+    path: /var/lib/loudml
+

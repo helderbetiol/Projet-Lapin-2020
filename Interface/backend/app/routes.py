@@ -4,6 +4,9 @@ import json
 from flask import request
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 HOST = os.environ['HOST']
 PORT = os.environ['PORT']
 USER = os.environ['USER']

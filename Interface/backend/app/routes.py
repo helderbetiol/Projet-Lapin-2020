@@ -2,12 +2,13 @@ from app import app
 from influxdb import InfluxDBClient
 import json
 from flask import request
+import os
 
-HOST = 'localhost'
-PORT = 8086
-USER = 'root'
-PASSWORD = 'root'
-DBNAME = 'rabbit'
+HOST = os.environ['HOST']
+PORT = os.environ['PORT']
+USER = os.environ['USER']
+PASSWORD = os.environ['PASSWORD']
+DBNAME = os.environ['DBNAME']
 
 @app.route('/')
 @app.route('/index')

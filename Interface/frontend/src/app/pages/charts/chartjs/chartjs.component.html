@@ -1,0 +1,118 @@
+<!--    <nb-card>-->
+<!--      <nb-card-header>Options</nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <nb-select selected="1">-->
+<!--          <nb-option value="1">Adrenaline</nb-option>-->
+<!--          <nb-option value="2">Repos</nb-option>-->
+<!--          <nb-option value="2">Ballon</nb-option>-->
+<!--        </nb-select>-->
+<!--        <nb-select selected="1">-->
+<!--          <nb-option value="1">Groupe 1</nb-option>-->
+<!--          <nb-option value="2">Groupe 2</nb-option>-->
+<!--          <nb-option value="2">Groupe 3</nb-option>-->
+<!--        </nb-select>-->
+<!--          <nb-select selected="1">-->
+<!--            <nb-option value="1">Frequence Cardiaque</nb-option>-->
+<!--            <nb-option value="2">Pression Arterielle</nb-option>-->
+<!--            <nb-option value="2">Frequence Respiratoire</nb-option>-->
+<!--          </nb-select>-->
+<!--          <nb-select selected="1">-->
+<!--            <nb-option value="1">10</nb-option>-->
+<!--            <nb-option value="2">100</nb-option>-->
+<!--            <nb-option value="2">1000</nb-option>-->
+<!--            <nb-option value="2">10000</nb-option>-->
+<!--          </nb-select>-->
+<!--        </nb-card-body>-->
+<!--    </nb-card>-->
+
+
+<nb-card>
+  <nb-card-header>Graphique</nb-card-header>
+  <nb-card-body>
+    <nb-select [(selected)]="selectedMeasure" (selectedChange)="changeMeasure($event)">
+      <nb-option value="adrenaline">Adrenaline</nb-option>
+      <nb-option value="acetylcholine">Acetylcholine</nb-option>
+      <nb-option value="ballon">Ballon</nb-option>
+    </nb-select>
+    <nb-select [(selected)]="selectedGroup" (selectedChange)="changeGroup($event)">
+      <nb-option *ngFor="let groupId of [1,2,3,4,5,6,7,8,9,10]" [value]="groupId">Groupe {{ groupId }}</nb-option>
+            <nb-option value="20">Génération</nb-option>
+      <!--      <nb-option value="3">Groupe 3</nb-option>-->
+      <!--      <nb-option value="3">Groupe 3</nb-option>-->
+      <!--      <nb-option value="3">Groupe 3</nb-option>-->
+      <!--      <nb-option value="3">Groupe 3</nb-option>-->
+      <!--      <nb-option value="3">Groupe 3</nb-option>-->
+      <!--      <nb-option value="3">Groupe 3</nb-option>-->
+      <!--      <nb-option value="3">Groupe 3</nb-option>-->
+      <!--      <nb-option value="3">Groupe 3</nb-option>-->
+    </nb-select>
+    <nb-select [(selected)]="selectedField" (selectedChange)="changeField($event)">
+      <nb-option value="FrequenceCardiaque">Fréquence Cardiaque</nb-option>
+      <nb-option value="PressionArterielle">Pression Artérielle</nb-option>
+      <nb-option value="FrequenceRespiratoire">Fréquence Respiratoire</nb-option>
+    </nb-select>
+    <nb-select [(selected)]="selectedLimit" (selectedChange)="changeLimit($event)">
+      <nb-option value="10">10</nb-option>
+      <nb-option value="100">100</nb-option>
+      <nb-option value="1000">1.000</nb-option>
+      <nb-option value="10000">10.000</nb-option>
+      <nb-option value="100000">100.000</nb-option>
+    </nb-select>
+    <button nbButton status="primary" size="small" (click)="applySelection()">
+      Appliquer
+    </button>
+
+    <!--    <ngx-chartjs-line></ngx-chartjs-line>-->
+    <chart type="line" [data]="data" [options]="options"></chart>
+  </nb-card-body>
+</nb-card>
+<!--<div class="row">-->
+<!--  <div class="col-lg-6">-->
+<!--    <nb-card>-->
+<!--      <nb-card-header>Pie</nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-chartjs-pie></ngx-chartjs-pie>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--  <div class="col-lg-6">-->
+<!--    <nb-card>-->
+<!--      <nb-card-header>Bar</nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-chartjs-bar></ngx-chartjs-bar>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--  <div class="col-lg-6">-->
+<!--    <nb-card>-->
+<!--      <nb-card-header>Line</nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-chartjs-line></ngx-chartjs-line>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--  <div class="col-lg-6">-->
+<!--    <nb-card>-->
+<!--      <nb-card-header>Multiple x-axis</nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-chartjs-multiple-xaxis></ngx-chartjs-multiple-xaxis>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--  <div class="col-lg-6">-->
+<!--    <nb-card>-->
+<!--      <nb-card-header>Bar Horizontal</nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-chartjs-bar-horizontal></ngx-chartjs-bar-horizontal>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--  <div class="col-lg-6">-->
+<!--    <nb-card>-->
+<!--      <nb-card-header>Radar</nb-card-header>-->
+<!--      <nb-card-body>-->
+<!--        <ngx-chartjs-radar></ngx-chartjs-radar>-->
+<!--      </nb-card-body>-->
+<!--    </nb-card>-->
+<!--  </div>-->
+<!--</div>-->

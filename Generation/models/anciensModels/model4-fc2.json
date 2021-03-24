@@ -1,0 +1,17 @@
+{
+  "bucket_interval": "0.1s",
+  "default_bucket": "rabbit",
+  "features": [
+    {
+      "name": "FC",
+      "field": "FrequenceCardiaque",
+      "metric": "avg"
+    }
+  ],
+  "interval": 60,
+  "max_evals": 10,
+  "name": "PA-model-10ms-fc2",
+  "span": 100,
+  "offset": 0,
+  "type": "donut" 
+}

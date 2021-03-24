@@ -2,7 +2,7 @@
 
 #### [Vidéo Pitch Présentation](https://www.youtube.com/watch?v=5mi0oyz8Dks) | [Vidéo Demo](https://www.youtube.com/watch?v=I_x9ePzZfyA)
 
-Bienvenue au dépôt GitHub du Projet Lapin 2020-2021 ! Le travail (et le dépôt) a été divisés en quatre subparties :
+Bienvenue au dépôt GitHub du Projet Lapin 2020-2021 ! Le travail (et le dépôt) a été divisé en quatre subparties :
 - Traitement de données
 - Génération
 - Arduino

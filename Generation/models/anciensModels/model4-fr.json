@@ -1,0 +1,17 @@
+{
+  "bucket_interval": "0.01s",
+  "default_bucket": "rabbit",
+  "features": [
+    {
+      "name": "FR",
+      "field": "FrequenceRespiratoire",
+      "metric": "avg"
+    }
+  ],
+  "interval": 60,
+  "max_evals": 10,
+  "name": "PA-model-10ms-fr",
+  "span": 100,
+  "offset": 0,
+  "type": "donut" 
+}

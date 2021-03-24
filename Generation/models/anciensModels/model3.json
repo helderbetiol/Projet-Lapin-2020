@@ -1,0 +1,18 @@
+{
+  "bucket_interval": "3s",
+  "default_bucket": "rabbit",
+  "features": [
+    {
+      "name": "rabbit2",
+      "default": 50,
+      "field": "FrequenceCardiaque",
+      "metric": "avg"
+    }
+  ],
+  "interval": 60,
+  "max_evals": 10,
+  "name": "testeFCmodel",
+  "span": 100,
+  "offset": 0,
+  "type": "donut" 
+}

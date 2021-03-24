@@ -1,0 +1,18 @@
+{
+  "bucket_interval": "13m",
+  "default_bucket": "rabbit",
+  "features": [
+    {
+      "name": "rabbit",
+      "default": 50,
+      "field": "PressionArterielle",
+      "metric": "avg"
+    }
+  ],
+  "interval": 60,
+  "max_evals": 10,
+  "name": "PA-model",
+  "offset": 30,
+  "span": 1,
+  "type": "donut" 
+}

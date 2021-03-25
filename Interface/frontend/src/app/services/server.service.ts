@@ -18,7 +18,7 @@ import { throwError } from 'rxjs';
 // const username = 'root';
 // /**InfluxDB password  */
 // const password = 'root';
-const headers = new HttpHeaders().set('Content-Type', 'application/vnd.flux').set('Accept', 'application/csv').set('Access-Control-Allow-Origin', '*');
+const headers = new HttpHeaders().set('Content-Type', 'application/vnd.flux').set('Accept', 'text/csv').set('Access-Control-Allow-Origin', '*');
 @Injectable({
   providedIn: 'root',
 })
@@ -28,6 +28,7 @@ export class ServerService {
   constructor(private http: HttpClient) { }
 
   get = <T>(extension, params = null) => {
+    // const options = { headers: headers, params: params, responseType: 'text' as any };
     return this.http.get<T>(this.baseUrl + extension, this.getParams(params)).pipe(catchError(this.handleError));
   }
 
@@ -46,6 +47,10 @@ export class ServerService {
 
   handleError = (error: HttpErrorResponse) => {
     return throwError(error.message || 'Error');
+  }
+
+  getBaseUrl = (extension) => {
+    return this.baseUrl + extension;
   }
 
   private getParams = (params = null) => {

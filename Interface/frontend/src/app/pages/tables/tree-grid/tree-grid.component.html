@@ -15,7 +15,15 @@
         </th>
         <td nbTreeGridCell *nbTreeGridCellDef="let row">
           <ngx-fs-icon [kind]="row.data.kind" [expanded]="row.expanded"></ngx-fs-icon>
-          {{row.data[customColumn]}}
+<!--          <a *ngIf="row.data.kind==='csv'; else kindDir" (click)="downloadCSV('export-text', 'adrenaline', '1')"-->
+          <a *ngIf="row.data.kind==='csv'; else kindDir"
+              href="{{downloadCSV(row.data[customColumn])}}">
+            {{row.data[customColumn]}}
+          </a>
+          <ng-template #kindDir>
+            {{row.data[customColumn]}}
+          </ng-template>
+
         </td>
       </ng-container>
 

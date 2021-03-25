@@ -1,54 +1,122 @@
 # Projet Lapin - Traitement des données
 
-## Comment utiliser nos fichiers ?
+## Comment utiliser nos livrables ?
 
-### Objectif
-Ce projet implemente en langage Cpp, permet d’étudier un problème de simulation d’un écosystème composé de
-bestioles. Vous trouverez une description détaillée de ce problème dans le fichier intitulé Simulation Ecosystème. À
-partir du besoin exprimé dans ce document, nous avons réalisé une modélisation de la solution envisagée au travers
-de designs patterns pour modéliser certains aspects statiques et dynamiques de la simulation demandée. L’analyse
-du besoin peut être trouvée dans le document suivant Analyse Besoin.
+Ce répertoire permet de traiter les données transmises par les étudiants de vétérinaire lors de ces TPs. Ce répertoire consiste en 5 fichiers : main.py, importationData.py, correction.py, affichageCourbes.py et csv2influx.py.
 
-## Fonctionnemment
-Pour exécuter la programme vous devez télécharger le répertoire et exécuter la commande :
+Pour l'exécuter nous vous suggérons d'abord créer un dossier avec toutes les fichiers .txt qui contiennent les différents fichiers à traiter. Nous vous recommandons aussi d'avoir un dossier à part où seront sauvegardés les fichiers traités.
 
-make clean
-make exec
+Pour faire le traitement il suffit d'exécuter le fichier main.py. Les différents modes vont définir quel comportement va être exécuté. Les modes possibles sont : Imp, Correct et Affich.
 
-Cela va permettre de construire tout le répertoire et les différents fichiers binaires pour exécuter le programme, et
-à la fin va exécuter le programme. Grâce à l’automatisation du Makefile, il n’est pas nécessaire de mettre tous
-les arguments d’entrée à la main et les recopier à chaque fois que l’on veut exécuter le programme. C’est donc
-recommandé d’utiliser le Makefile pour modifier les arguments d’entrée et exécuter le programme.
-Les différents arguments sont détaillés plus en profondeur ci-dessous :
+## main.py
 
-[0] nbBestioles : Nombre de bestioles totales. Nombre entier.
-- x100Personnalites : Pourcentages de chaque type de Bestiole (selon son comportement). C’est un vecteur
-de taille 5. Les valeurs sont données comme pourcentage (entre 0 et 100 par exemple) :
+Voici la liste d'arguments d'entrée qui peuvent être utilisés pour exécuter le main.py:
 
 
-[1] %Population Grégaire.
-[2] %Population Peureuse.
-[3] %Population Kamikaze.
-[4] %Population Prévoyante.
-[5] %Population Personnalités Multiples.
+### --mode (type=str, required=True)
 
-Les suivantes sont couples de paramètres qui représentent les limites ([maximum] et [minimum]) des différentes
-variables :
+Mode d'exécution du programme. Il y a 3 possibles valeurs: 
+  - 'Imp' : Importe les données, les séparent par séquence, enlève les séquences illogiques (telles que plusieurs débuts), et finalement les transforme en fichiers .csv. Ce mode crée 3 types de fichiers, un fichier .csv avec toutes les séquences (son nom inclu le mot "complet"), un fichier .txt qui met en relation le nom d'une séquence avec l'ordre d'exécution (par exemple la séquence 0 généralement est "démarrage"), et finalement plusieurs fichiers .csv avec les différentes séquences, et només selon l'ordre d'apparition de la séquence (par exemple séquence0).
+  - 'Correct' : Corrige les données dans un fichier .csv. Les intervalles pour les données ont été fournis par une experte et se trouvent à l'intérieur du code. Un point d'amélioration serait de les données comme paramètres d'entrée.
+  - 'Affich' permet d'afficher une variable particulière d'un fichier .csv spécifique.
 
-[6][7] : Champ anguler de détection pour les yeux. Valeurs en dégrées.
-[8][9] : Distance de détection pour les yeux. Valeurs en nombre de pixels.
-[10][11] : Capacité de détection pour les yeux. Valeurs entre 0 et 1.
-[12][13] : Distance de perception pour les oreilles. Valeurs en nombre de pixels.
-[14][15] : Capacité de perception pour les oreilles. Valeurs entre 0 et 1.
-[16] : Coefficient d’augmentation maximum sur la vitesse pour les nageoires. Valeurs double avec un décimale
-de précision.
-[17][18] : Capacité de camouflage pour le camouflage. Valeurs entre 0 et 1.
-[19] : Coefficient maximum de résistance aux collisions pour la carapace. Valeur double avec un décimale de précision.
-[20] : Coefficient maximum de ralentissement de la vitesse pour la carapace. Valeur double avec un décimale de précision.
-[21] : Probabilité de mort dans le cas de collision pour une bestiole. Probabilité donnée entre 0 et 1.
-[22] : Distance à laquelle est considérée une collision entre deux bestioles. Valeur en nombre de pixels.
-[23] : Valeur maximum pour la durée de vie d’une bestiole. Valeur entier qui représente nombre de pas de simulation.
-[24] : Probabilité de qu'une bestiole fasse de clonage un cycle. Probabilité donnée entre 0 et 1.
+### --pathin (type=str, required=False)
+
+Chemin où se trouvent les fichiers à traiter. Celui-ci peut-être un fichier ou un dossier en dépendant du mode choisi. Par défaut est "./data/Source"
+
+### --pathout (type=str, required=False)
+
+Chemin où se stockent les fichiers traités. Celui-ci est toujours un dossier. Par défaut est "./data/Sortie"
+
+### --varex (type=str, required=False)
+
+C'est la variable à éxaminer et être affichée. N'est applicable que dans le mode "Affich". Par défaut est "Frequence Respiratoire".
+
+### --step (type=int, required=False)
+
+Pas de réchantillonage pour l'affichée. N'est applicable que dans le mode "Affich". Par défaut est 0.1.
+
+### --oristep (type=int, required=False)
+
+Pas d'échantillonage des données, c'est-à-dire, la periode de temps entre chaque échantillon d'un fichier. N'est applicable que dans le mode "Affich". Par défaut est 0.001.
+
+### --sommaire (type=str, required=False)
+
+Nom de la colonne de sommaire des données pour l'affichée. N'est applicable que dans le mode "Affich". Par défaut est "Temps".
+
+### -vars (type=int, required=False, nargs=7)
+
+Nom des différentes variables qui se trouvent dans l'en-tête à générer. N'est applicable que dans le mode "Imp". By default it will be ['Temps', 'PressionArterielle', 'Spirometrie', 'PAmoyenne', 'FrequenceCardiaque', 'FrequenceRespiratoire', 'Remarque'].
+
+## Fonctionnement des modes
+
+### Importation ("Imp")
+
+Pour ce mode vous devez fournir obligatoirement le paramètre --mode. Par contre, il est recommandé de fournir aussi le --pathin et le --pathout. --pathin fait référence à un dossier où se trouvent toutes les fichiers à traiter. --pathout doit être un dossier où se stockeront les fichiers traités en sous-dossieurs produits pour le programme même.
+
+De plus, vous pouvez fournir le paramètre -vars pour spécifier les variables et leur ordre dans l'en-tête.
+
+Ex : 
+
+´python main.py --mode "Imp" --pathin "C:\Users\Projet\Data\Source" --pathout "C:\Users\Projet\Data\Sortie" -vars "Temps" "PressionArterielle" "Spirometrie" "PAmoyenne" "FrequenceCardiaque" "FrequenceRespiratoire" "Remarque"´
+
+### Correction ("Correct")
+
+Pour ce mode vous devez fournir obligatoirement le paramètre --mode. Par contre, il est recommandé de fournir aussi le --pathin. --pathin fait référence au dossier à un dossier où se trouvent les différents sous-dossiers qui stockent les données déjà importées préalablement par le mode "Imp".
+
+De plus, vous pouvez changer directement dans le code les valeurs par défaut qui définiront la première valeur d'une séquence. Comme point d'amélioration, ces valeurs par défaut pourrient être données par l'utilisateur.
+
+Ex : 
+
+´python main.py --mode "Correct" --pathin "C:\Users\Projet\Data\Sortie" ´
+
+### Affichage ("Affich")
+
+Pour ce mode vous devez fournir obligatoirement le paramètre --mode. Par contre, il est recommandé de fournir aussi le --pathin, --sommaire et --varex. --pathin fait référence à un fichier .csv. --sommaire est le sommaire qui détermine la valeur de l'axe "x" dans la graphique. --varex détermine la variable à examiner et qui correspond à celle de l'axe "y".
+
+Comme point d'amélioration, les autres valeurs peuvent être inclus dans l'algorithme d'affichage.
+
+Ex : 
+
+´python main.py --mode "Affiche" --pathin "C:\Users\Projet\Data\Sortie\data-groupe9\Corrigees\data-groupe9_Sequence6_Corrigee.csv" --sommaire "Temps" --varex "PAmoyenne"´
 
 
-Projet-Bestioles-Corrigés - Groupe2
+## csv2python
+
+Ce fichier envoie les données en format .csv vers la base de données InfluxDB dans le format influx.
+
+### --host (type=str, required=False)
+
+Hostname de InfluxDB http API.
+
+### --port (type=int, required=False)
+
+Porte de InfluxDB http API.
+
+### --user (type=str, required=False)
+
+Utilisateur de InfluxDB.
+
+### --password (type=str, required=False)
+
+Mot de passe de InfluxDB.
+
+### --dbname (type=str, required=False)
+
+Base de données à utiliser ou créer.
+
+### --file (type=str, required=False)
+
+Fichier CSV à partir duquel les données seront lues.
+
+### --path (type=str, required=False)
+
+Dossier avec fichiers CSV à partir duquel les données seront lues.
+
+### --measure (type=str, required=True)
+
+Mesures : adrenaline, acetylcholine, rest, etc.
+
+### --group (type=int, required=True)
+
+ID de groupe qu'identifie un lapin unique.

@@ -42,7 +42,10 @@ Retention policy: autogen (InfluxDB automatically creates that retention policy;
 
 ## Code
 
-Csv2influx.py is used to read the data from .csv files and create the influx database according to the above schema.
+Csv2influx.py is used to read the data from .csv files and create the influx database according to the above schema. More information on how to use it can be found on the code. The following command can help:
+```
+python csv2influx.py --help
+```
 
 Csv2influxV2.py has the same purpose, but using a different schema. Only one field is present and the name of the field (Pression Arterielle, for example) is a tag. This creates one serie per injection per groupe per field. It was used only for testing.
 
